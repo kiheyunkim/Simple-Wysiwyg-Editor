@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./simpleEditor/css/simpleEditor.css">
+</head>
+<body>
+<div id="simple_editor">
+    <div style="clear:both"></div>
+    <div id="menu_area">
+        <select id="font_list">
+            <option selected>기본 글씨체</option>
+            <option>글씨체1</option>
+            <option>글씨체2</option>
+            <option>글씨체3</option>
+            <option>글씨체4</option>
+        </select>
+        <ul id="menu_list">
+            <li id="button_1" class="menu_element">버</li>
+            <li id="button_2" class="menu_element">버</li>
+        </ul>
+    </div>
+    <div style="clear: left"></div>
+    <div id="contents_area">
+        <textarea id="contents"></textarea>
+    </div><!--
+--><button id="size_button">크기 조절</button>
+</div>
+<!--<table>
+    <th>여긴 제목</th>
+    <tr>
+        <td>행</td>
+        <td>
+
+        </td>
+    </tr>
+    <tr>
+        <td>행2</td>
+        <td>행2 내용</td>
+    </tr>
+
+</table>-->
+
+</body>
+<script src="./simpleEditor/core/SimpleEditor.js"></script>
+<script src="./simpleEditor/js/editor.js"></script>
+<script>
+    let simpleEditor = setSimpleEditor();
+    console.log(simpleEditor.getContents());
+</script>
+</html>
