@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>EDITOR</title>
+	<link rel="stylesheet" type="text/css" href="/simpleEditor/css/editor.css">
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;400;500;600;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div id="editor_warp">
+		<div id="editor_group">
+			<ul id="function_line">
+				<!-- HTML 모드에서는 ID명 return_btns을 제외한 모든 li 태그에 class명 off 추가 -->
+				<li id="return_btns" class="group">
+					<ul>
+						<li><button id="undo">undo</button></li>
+						<li><button id="redo">redo</button></li>
+					</ul>
+				</li>
+				<li id="font_btns" class="group editor-mode-btn">
+					<ul>
+						<li>
+							<select id="fontfamily">
+								<!-- option 태그에서 인라인 스타일이 적용이 안된다고 함, 자바스크립트로 해야 한다고 함 -->
+								<option value="none" selected disabled hidden>글꼴</option>
+								<option value="font1">Noto Sans</option>
+								<option value="font2">Noto Serif</option>
+							</select>
+						</li>
+						<li>
+							<select id="fontsize">
+								<option value="paragraph" id="paragraph">본문(14px)</option>
+								<option value="header1" id="header1">제목(32px)</option>
+								<option value="header4" id="header4">소제목(16px)</option>
+							</select>
+						</li>
+					</ul>
+				</li>
+				<li id="fontstyle_btns" class="group editor-mode-btn">
+					<ul>
+						<li><button id="italic">italic</button></li>
+						<li><button id="bold">bold</button></li>
+						<li><button id="underline">underline</button></li>
+						<li><button id="cancelline">cancelline</button></li>
+					</ul>
+				</li>
+				<li id="align_btns" class="group editor-mode-btn">
+					<ul>
+						<li><button id="centeralign">centeralign</button></li>
+						<li><button id="leftalign">leftalign</button></li>
+						<li><button id="rightalign">rightalign</button></li>
+					</ul>
+				</li>
+				<li id="indent_btns" class="group editor-mode-btn">
+					<ul>
+						<li><button id="indentation">indentation</button></li>
+						<li><button id="unindentation">unindentation</button></li>
+					</ul>
+				</li>
+				<li id="del_btns" class="group editor-mode-btn">
+					<button id="delete">delete</button>
+				</li>
+			</ul>
+			<div id="textbox">
+				<!-- 에디터 모드가 기본적으로 활성화되어 class명 write_area에 추가 class명 on 삽입상태 -->
+				<iframe id="editor_area" class="write-area" src="editor_textarea.html" style="display: block;">
+				</iframe>
+				<textarea id="HTML_area" class="write-area"><div style="font-family: 'Noto Sans KR', sans-serif;"><!-- 내용 --></div><!-- basicfont --><div style="font-family: 'Noto Serif KR', serif;"><!-- 내용 --></div><!-- font1 --><p style="font-size: 14px;">다람쥐 헌 쳇바퀴에 타고파</p><!-- paragraph --><h1>다람쥐 헌 쳇바퀴에 타고파</h1><!-- header1 --><h4>다람쥐 헌 쳇바퀴에 타고파</h4><!-- header4 --><i>다람쥐 헌 쳇바퀴에 타고파</i><!-- italic --><b>다람쥐 헌 쳇바퀴에 타고파</b><!-- bold --><u>다람쥐 헌 쳇바퀴에 타고파</u><!-- underline --><s>다람쥐 헌 쳇바퀴에 타고파</s><!-- cancelline --><div style="text-align: center;"><!-- 내용 --></div><!-- centeralign --><div style="text-align: left;"><!-- 내용 --></div><!-- leftalign --><div style="text-align: right;"><!-- 내용 --></div><!-- rightalign --><div style="text-indent: 14px;"><!-- 내용 --></div><!-- indentation --><div style="text-indent:-14px;"><!-- 내용 --></div><!-- unindentation --><del>다람쥐 헌 쳇바퀴에 타고파</del><!-- delete --></textarea>
+			</div>
+			<div id="tab_group" class="group">
+				<ul>
+					<li class="tab-btn on">
+						<a href="#editor_area" class="mode-btn">Editor</a>
+					</li>
+					<li id="HTML_btn" class="tab-btn">
+						<a href="#HTML_area" class="mode-btn">HTML</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<p id="copyright">Copyright 2021.~~~.All rights reserved</p>
+	</div>
+</body>
+<script type="text/javascript">
+	const editorConverterButtonType = {
+		editorMode : 0,
+		htmlMode : 1,
+	};
+
+	console.log(editorConverterButtonType);
+
+	const tabList = document.querySelectorAll('.tab-btn');
+	console.log(tabList);
+
+	for(let i = 0 ; i < tabList.length ; ++i){
+		tabList[i].addEventListener('click', function(event){
+			console.log();
+			//1: 기존 하이퍼링크 동작을 방지한다.
+			event.preventDefault();
+			//href의 디폴트 동작 = 페이지 이동
+			//난 페이지 이동을 하면 안되는 상황(버튼으로 사용)
+			//prevent 방지한다, default 기본값
+
+
+			//중복 클릭 방지
+			if(tabList[i].classList.contains('on')){
+				return;
+			}
+			//여기에 해당하는 코드는 모든 이벤트가 붙는 대상이 실행되는 공통 코드
+			let functionBttns = document.querySelectorAll('.editor-mode-btn');//기능 버튼들
+			console.log(functionBttns);
+
+			//내용 입력칸 활성화
+			let writeAreas = document.querySelectorAll('.write-area');
+			console.log(writeAreas);	
+
+			let writeAreaLength = writeAreas.length;
+			console.log(writeAreaLength);
+			console.log(writeAreas.length);
+
+			for(let j = 0 ; j < writeAreaLength ; ++j){
+				writeAreas[j].style.display = (i === j) ? 'block' : 'none'; //삼항연산자(?: 물음표 앞에는 참거짓을 가려내는것 참일때는 : 앞, 거짓일때는 : 뒤)
+				console.log(j);
+				console.log(writeAreas[j]);
+			}
+
+			//버튼에 달린 href 속성 = 게시판 타입
+			let buttonType = tabList[i].querySelector('a').getAttribute('href')
+			console.log(buttonType);
+
+			//2. 이 버튼이 html버튼인지 editor버튼인지 구분한다.	
+			if(editorConverterButtonType.editorMode === i){
+				functionBttns.forEach(function(functionBttn){
+					functionBttn.classList.remove('off');
+				});
+
+				//html 버튼을 비활성화
+				tabList[editorConverterButtonType.editorMode].classList.add('on');
+				tabList[editorConverterButtonType.htmlMode].classList.remove('on');
+
+
+			}else if(editorConverterButtonType.htmlMode === i){
+				functionBttns.forEach(function(functionBttn){
+					functionBttn.classList.add('off');
+				});
+
+				//html 버튼을 비활성화
+				tabList[editorConverterButtonType.editorMode].classList.remove('on');
+				tabList[editorConverterButtonType.htmlMode].classList.add('on');
+			}
+
+		});
+
+		console.log(i,tabList[i]);
+	}
+	
+
+//로직엔 충실하나 정리가 안된 코드
+	/*
+	const editorConverterButtonType = {
+		editorMode : 0,
+		htmlMode : 1,
+	};
+
+	const tabList = document.querySelectorAll('.tab-btn');
+	for(let i = 0 ; i < tabList.length ; ++i){
+		tabList[i].addEventListener('click', function(event){
+			//1: 기존 하이퍼링크 동작을 방지한다.
+			event.preventDefault();
+
+			//2. 이 버튼이 html버튼인지 editor버튼인지 구분한다.	
+			if(editorConverterButtonType.editorMode === i){
+				let functionBttns = document.querySelectorAll('.editor-mode-btn');//기능 버튼들
+				functionBttns.forEach(function(functionBttn){
+					functionBttn.classList.remove('off');
+				});
+
+				//내용 입력칸 활성화
+				let writeAreas = document.querySelectorAll('.write-area');
+				let writeAreaLength = writeAreas.length;
+				for(let j=0;j<writeAreaLength;++j){
+					writeAreas[j].style.display = (i === j) ? 'block' : 'none';
+					
+					//if(j === i){
+					//	writeAreas[j].style.display = ;	
+					//}else{
+					//	writeAreas[j].style.display = 'none';		
+					//}
+				}
+
+				//내용 삽입
+				let buttonType = tabList[i].querySelector('a').getAttribute('href')
+
+				//html 버튼을 비활성화
+				tabList[editorConverterButtonType.editorMode].classList.add('on');
+				tabList[editorConverterButtonType.htmlMode].classList.remove('on');
+
+
+			}else if(editorConverterButtonType.htmlMode === i){
+				let functionBttns = document.querySelectorAll('.editor-mode-btn');//기능 버튼들
+				functionBttns.forEach(function(functionBttn){
+					functionBttn.classList.add('off');
+				});
+
+				//내용 입력칸 활성화
+				let writeAreas = document.querySelectorAll('.write-area');
+				let writeAreaLength = writeAreas.length;
+				for(let j=0;j<writeAreaLength;++j){
+					writeAreas[j].style.display = (i === j) ? 'block' : 'none';
+					
+					//if(j === i){
+					//	writeAreas[j].style.display = ;	
+					//}else{
+					//	writeAreas[j].style.display = 'none';		
+					//}
+					//
+				}
+
+				//내용 삽입
+				let buttonType = tabList[i].querySelector('a').getAttribute('href')
+
+				//html 버튼을 비활성화
+				tabList[editorConverterButtonType.editorMode].classList.remove('on');
+				tabList[editorConverterButtonType.htmlMode].classList.add('on');
+			}
+		});
+	}
+
+*/
+//개못하는 답안
+/*
+
+	const tabList = document.querySelectorAll('.tab-btn');//클래스를 불러올때는 querySelectorAll로
+	const contents = document.querySelectorAll('.write-area');
+	let activeCont = ''; // 현재 활성화 된 컨텐츠 (기본:#editor_area 활성화)
+
+
+	for(var i = 0; i < tabList.length; i++){//length는 개수
+	  tabList[i].querySelector('.mode-btn').addEventListener('click', function(e){
+	    e.preventDefault();//prevent는 막다
+	    for(var j = 0; j < tabList.length; j++){
+	      // 나머지 버튼 클래스 제거
+	      tabList[j].classList.remove('on');
+
+	      // 나머지 컨텐츠 display:none 처리
+	      contents[j].style.display = 'none';
+	    }
+
+	    // 버튼 관련 이벤트
+	    this.parentNode.classList.add('on');//어미객체에 클래스 추가
+
+	    // 버튼 클릭시 컨텐츠 전환
+	    activeCont = this.getAttribute('href');
+	    document.querySelector(activeCont).style.display = 'block'
+
+
+	    //HTML 버튼 클릭시 에디터 기능 비활성화
+	    const htmlOn = document.querySelector('#HTML_btn');//html 전환 버튼
+		const btnsOff = document.querySelectorAll('.editor-mode-btn');//기능 버튼들
+		const hasClass = htmlOn.classList.contains('on');  //html 전환 버튼이 늘렸는지
+
+		if(hasClass){
+			console.log(btnsOff);
+			btnsOff.classList.add('off');
+		}else{
+			btnsOff.classList.remove('off');
+		}	
+
+	});
+
+	  
+	}
+	*/
+</script>
+</html>
