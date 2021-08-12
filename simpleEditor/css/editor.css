@@ -1,0 +1,244 @@
+body{
+  margin: 20px;
+}
+select:focus, textarea:focus{
+  outline: none;
+}
+#editor_warp{
+  padding: 20px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.2);
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+}
+#editor_warp ul{
+  list-style: none;
+}
+#editor_warp button{
+  border: none;
+  background-color: transparent;
+  padding: 5px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  text-indent: 9999%;
+  overflow: hidden;
+  position: relative;
+}
+#editor_warp button:hover{
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.4);
+}
+#editor_warp button::after{
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  left: 7px;
+  top: 7px;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#editor_group{
+  width: 100%;
+  height: 100%;
+}
+
+/* function */
+#function_line{
+  margin: 5px 0px;
+  padding: 5px;
+  padding-bottom: 0px;
+  border-bottom: 1px solid #ddd;
+}
+.group{
+  display: inline-block;
+  position: relative;
+  padding-right: 10px;
+  padding-bottom: 10px;
+}
+.group:nth-last-child(1){
+  padding-right: 0px;
+}
+.group::after{
+  content: "";
+  width: 1px;
+  height: 30px;
+  display: inline-block;
+  position: absolute;
+  right: 2px;
+  top: 0;
+  background-color: #ececec;
+}
+.group:nth-last-child(1)::after{
+  display: none;
+}
+#function_line .group.off{
+  position: relative;
+}
+#function_line .group.off:after{
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255,255,255,0.75);
+  z-index: 100;
+}
+.group>ul{
+  display: inline-block;
+  padding: 0px;
+  margin: 0px;
+}
+.group>ul>*{
+  display: inline-block;
+}
+
+/* function_return */
+#return_btns{
+  
+}
+#undo::after{
+  background: url(../img/undo-arrow.svg);
+}
+#redo::after{
+  background: url(../img/redo-arrow.svg);
+}
+
+/* function_font */
+#font_btns{
+  
+}
+.group select{
+  height: 30px;
+  width: 120px;
+  border: 1px solid #ddd;
+  background: transparent;
+  -moz-appearance:none; /* Firefox */
+  -webkit-appearance:none; /* Safari and Chrome */
+  appearance:none;
+  box-shadow: none;
+  padding: 5px;
+  box-sizing: border-box;
+  background: url(../img/down-filled-triangular-arrow.svg) no-repeat;
+  background-size: 8px;
+  background-position-x: 100px;
+  background-position-y: 12px;
+}
+.group select::-ms-expand{
+  display:none;
+}
+.group select option{
+  border: 1px solid #ddd;
+  box-shadow: none;
+}
+
+/* function_fontstyle */
+#fontstyle_btns{
+  
+}
+#italic::after{
+  background: url(../img/italicize-text.svg);
+}
+#bold::after{
+  background: url(../img/bold-text.svg);
+}
+#underline::after{
+  background: url(../img/underlined-text.svg);
+}
+#cancelline::after{
+  background: url(../img/cancel-text.svg);
+}
+
+/* function_align */
+#align_btns{
+  
+}
+#centeralign::after{
+  background: url(../img/center-align.svg);
+}
+#leftalign::after{
+  background: url(../img/left-align.svg);
+}
+#rightalign::after{
+  background: url(../img/right-align.svg);
+}
+
+/* function_indent */
+#indent_btns{
+  
+}
+#indentation::after{
+  background: url(../img/indent.svg);
+}
+#unindentation::after{
+  background: url(../img/unindent.svg);
+}
+
+/* function_delete */
+#del_btns{
+  
+}
+#delete::after{
+  background: url(../img/tag-delete.svg);
+}
+
+.on{
+  display: inherit !important;
+}
+
+/* textbox */
+#textbox{
+  width: 100%;
+}
+.write-area{
+  width: 100%;
+  resize: none;
+  border: 1px solid #ddd;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  height: 480px;
+  display: none;
+}
+#editor_area{
+  padding: 10px !important;
+}
+
+/* writing mode */
+#tab_group{
+  width: 100%;
+  text-align: right;
+}
+.tab-btn{
+  display: inline-block;
+}
+.tab-btn a{
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  width: 60px;
+  border-top: none !important;
+  color: #888;
+  border-radius: 0 0 10px 10px;
+  background: #ddd;
+  text-align: center;
+  font-size: 14px;
+  display: inline-block;
+  text-decoration: none;
+}
+.tab-btn a:hover{
+  box-shadow: none !important;
+}
+.tab-btn.on a{
+  background: #fff !important;
+  position: relative;
+  top: -2px;
+  color: #888;
+}
+
+/* copyright */
+#copyright{
+  text-align: right;
+  font-size: 12px;
+  color: #aaa;
+  padding: 0px;
+}
